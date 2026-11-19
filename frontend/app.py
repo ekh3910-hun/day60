@@ -27,7 +27,7 @@ st.title("Perso API 통합 미디어 스튜디오")
 st.caption("Day60 | Streamlit → FastAPI → Perso / PostgreSQL | 실제 API 호출 시 과금 가능")
 
 if "space_seq" not in st.session_state:
-    st.session_state.space_seq=0
+    st.session_state.space_seq=int(os.getenv('PERSO_SPACE_SEQ', '612721'))
 if "media_seq" not in st.session_state:
     st.session_state.media_seq=0
 
