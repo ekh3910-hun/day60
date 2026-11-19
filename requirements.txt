@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+httpx
+python-dotenv
+python-multipart
+pydantic-settings
+psycopg[binary]
+streamlit
+requests
+pytest
+pytest-asyncio
