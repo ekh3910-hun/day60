@@ -104,6 +104,9 @@ with create_tab:
             try:
                 with st.spinner("Perso 프로젝트 생성 중..."):
                     out=api.post(path,body)
+                if out.get('projectSeqList'):
+                    st.session_state.status_pid = int(out['projectSeqList'][0])
+                    st.session_state.result_pid = int(out['projectSeqList'][0])
                 st.success(f"생성 요청 완료: projectSeqList={out['projectSeqList']}")
                 st.json(out)
             except api.ApiError as exc:st.error(str(exc))
