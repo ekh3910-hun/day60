@@ -1,5 +1,6 @@
 """Streamlit Presentation Layer — 탭별 UI, 모든 실제 API 호출은 FastAPI에 위임."""
 import json
+import hmac
 import os
 import sys
 from pathlib import Path
@@ -10,6 +11,18 @@ sys.path.insert(0,str(Path(__file__).resolve().parent))
 import api_client as api
 
 st.set_page_config(page_title="Perso AI Studio | Day60",layout="wide",page_icon="🎙️")
+if os.getenv('STUDIO_PASSWORD'):
+    if not st.session_state.get('studio_authenticated'):
+        st.title('Day60 스튜디오 로그인')
+        with st.form('studio_login'):
+            password = st.text_input('접속 비밀번호', type='password')
+            submitted = st.form_submit_button('로그인')
+        if submitted:
+            if hmac.compare_digest(password, os.environ['STUDIO_PASSWORD']):
+                st.session_state.studio_authenticated = True
+                st.rerun()
+            st.error('비밀번호가 맞지 않습니다.')
+        st.stop()
 st.title("Perso API 통합 미디어 스튜디오")
 st.caption("Day60 | Streamlit → FastAPI → Perso / PostgreSQL | 실제 API 호출 시 과금 가능")
 
