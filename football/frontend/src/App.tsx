@@ -66,7 +66,7 @@ function Home({ onSelect, onDub }: { onSelect: (team: Team) => void; onDub: () =
   return <main className="home page-enter">
     <header className="topbar">
       <a className="brand" href="#" onClick={e => e.preventDefault()}><span className="brand-ball">F</span><span>FINAL<br/><b>WHISTLE</b></span></a>
-      <nav><button className="active">Clubs</button><button onClick={onDub}>한국어 더빙</button></nav>
+      <nav><button className="active">Clubs</button><a className="highlights-link" href="/highlights">공식 하이라이트</a><button onClick={onDub}>한국어 더빙</button></nav>
       <button className="season-pill">2024/25 Season</button>
     </header>
     <section className="hero-copy">

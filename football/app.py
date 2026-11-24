@@ -1,5 +1,6 @@
 """프로젝트 루트에서 python -m uvicorn football.app:app --port 8062"""
 import os
+import asyncio
 from pathlib import Path
 import httpx
 from dotenv import load_dotenv
@@ -14,6 +15,18 @@ from football import engine
 
 app = FastAPI(title='Football Korean Dubbing')
 app.mount('/engine', engine.app)
+
+@app.get('/api/highlights')
+async def highlights():
+    from football.highlights import get_highlights
+    try:
+        return {'videos': await asyncio.to_thread(get_highlights)}
+    except Exception:
+        raise HTTPException(503,'YouTube에서 목록 조회를 제한하고 있습니다. 공식 채널 링크로 확인하세요.')
+
+@app.get('/highlights')
+def highlights_page():
+    return FileResponse(ROOT/'highlights.html')
 
 @app.get('/')
 def home():
