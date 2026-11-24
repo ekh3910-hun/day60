@@ -59,14 +59,14 @@ function Icon({ name }: { name: "search" | "back" | "chevron" | "star" | "users"
   return <svg viewBox="0 0 24 24" aria-hidden="true">{paths[name]}</svg>;
 }
 
-function Home({ onSelect, onDub }: { onSelect: (team: Team) => void; onDub: () => void }) {
+function Home({ onSelect }: { onSelect: (team: Team) => void }) {
   const [league, setLeague] = useState<League>("Premier League");
   const [query, setQuery] = useState("");
   const visible = teams.filter(t => t.league === league && `${t.name} ${t.korean}`.toLowerCase().includes(query.toLowerCase()));
   return <main className="home page-enter">
     <header className="topbar">
       <a className="brand" href="#" onClick={e => e.preventDefault()}><span className="brand-ball">F</span><span>FINAL<br/><b>WHISTLE</b></span></a>
-      <nav><button className="active">Clubs</button><a className="highlights-link" href="/highlights">공식 하이라이트</a><button onClick={onDub}>한국어 더빙</button></nav>
+      <nav><button className="active">Clubs</button><a className="highlights-link" href="/highlights">공식 하이라이트</a></nav>
       <button className="season-pill">2024/25 Season</button>
     </header>
     <section className="hero-copy">
@@ -156,9 +156,5 @@ function TeamDetail({ team, onBack }: { team: Team; onBack: () => void }) {
 
 export default function App() {
   const [team, setTeam] = useState<Team | null>(null);
-  const [dubOpen,setDubOpen]=useState(false);
-  const [dubLoaded,setDubLoaded]=useState(false);
-  const openDub=()=>{setDubLoaded(true);setDubOpen(true)};
-  const closeDub=()=>{const frame=document.querySelector<HTMLIFrameElement>('#dubbing-frame');frame?.contentDocument?.querySelectorAll('video').forEach(v=>v.pause());setDubOpen(false)};
-  return <div className="app-shell"><div className="stadium-bg"/><div className="atmosphere"/>{team ? <TeamDetail team={team} onBack={() => setTeam(null)}/> : <Home onSelect={setTeam} onDub={openDub}/>}<button className="dub-launcher" onClick={openDub}>▶ 한국어 더빙 스튜디오</button>{dubLoaded&&<section className="dub-overlay" hidden={!dubOpen} aria-label="한국어 더빙 스튜디오"><header><span>FINAL WHISTLE / DUBBING LAB</span><button onClick={closeDub}>닫기 ×</button></header><iframe id="dubbing-frame" title="영상 업로드 및 한국어 더빙" src="/dubbing"/></section>}</div>;
+  return <div className="app-shell"><div className="stadium-bg"/><div className="atmosphere"/>{team ? <TeamDetail team={team} onBack={() => setTeam(null)}/> : <Home onSelect={setTeam}/>}</div>;
 }
